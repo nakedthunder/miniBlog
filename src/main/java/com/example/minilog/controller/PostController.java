@@ -1,9 +1,12 @@
 package com.example.minilog.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.minilog.request.PostCreate;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
+@Slf4j
 @RestController
 public class PostController {
     /*
@@ -17,7 +20,8 @@ public class PostController {
     *  http://localhost:8080/posts 요청을하면 String을 리턴한다.
     * */
     @PostMapping("/posts")
-    public String post(){
+    public String post(@ModelAttribute PostCreate params){
+        log.info("params={}", params.toString()); //@Slfj를 통해 롬복사용하기, toString()을 통해서 문자값보여주게
         return "Hello World";
     }
 }
