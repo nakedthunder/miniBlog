@@ -35,12 +35,13 @@ class PostControllerTest {
         *
         * -  .andDo(print()) 를 추가함으로써 HTTP요청에 대한 summary를 남겨주게되서 응답내용을 볼 수 있다.
         *
+        * JSON데이터로 통신
+        * 사용자의 데이터는 많을텐데..데이더를 표현하는데 한계가 있어 JSON데이터로 만들어서 보낸다.
         * */
 
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("title", "글 제목입니다.")
-                        .param("content", "글 내용입니다.")
+                        .contentType(MediaType.APPLICATION_JSON) //컨텐츠타입 기본값 JSON 데이터 타입으로 명시해주기
+                        .content("{\"title\":  \"제목입니다.\", \"content\": \"내용입니다.\" }")
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("Hello World"))

@@ -20,7 +20,7 @@ public class PostController {
     *  http://localhost:8080/posts 요청을하면 String을 리턴한다.
     * */
     @PostMapping("/posts")
-    public String post(@ModelAttribute PostCreate params){
+    public String post(@RequestBody PostCreate params){
         log.info("params={}", params.toString()); //@Slfj를 통해 롬복사용하기, toString()을 통해서 문자값보여주게
         return "Hello World";
     }
