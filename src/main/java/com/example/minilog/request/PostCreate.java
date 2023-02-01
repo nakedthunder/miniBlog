@@ -1,32 +1,22 @@
 package com.example.minilog.request;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import javax.validation.constraints.NotBlank;
+
+@Setter
+@Getter
+@ToString
 public class PostCreate {
-    public String title;
-    public String content;
 
-    //요청이 왔을 때 넣어주는 set, get
-    public String getTitle() {
-        return title;
-    }
+    @NotBlank
+    private String title;
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    @NotBlank
+    private String content;
 
-    public String getContent() {
-        return content;
-    }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
 
-    //control + enter
-    @Override
-    public String toString() {
-        return "PostCreate{" +
-                "title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                '}';
-    }
 }
