@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WebMvcTest
 class PostControllerTest {
@@ -26,7 +27,7 @@ class PostControllerTest {
                         .content("{\"title\":  \"제목입니다.\", \"content\": \"내용입니다.\" }")
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("Hello World"))
+                .andExpect(MockMvcResultMatchers.content().string("{}"))
                 .andDo(print()) //HTTP요청에 대한 summary를 남겨주게되서 응답내용 보여줌 
         ;
 
@@ -40,7 +41,8 @@ class PostControllerTest {
                         .content("{\"title\":  \"\", \"content\": \"내용입니다.\" }")
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("Hello World"))
+                //jsonPath moveMVC resultMatchers: value에 notBlank메세지랑 맞춰야한다. 검증방법
+                .andExpect(jsonPath("$.title").value("타이틀을 입력해주세요."))
                 .andDo(print()) //HTTP요청에 대한 summary를 남겨주게되서 응답내용 보여줌
         ;
 
