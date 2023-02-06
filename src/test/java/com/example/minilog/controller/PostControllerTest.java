@@ -38,7 +38,7 @@ class PostControllerTest {
     void test2() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
                         .contentType(MediaType.APPLICATION_JSON) //컨텐츠타입 기본값 JSON 데이터 타입으로 명시해주기
-                        .content("{\"title\":  \"\", \"content\": \"내용입니다.\" }")
+                        .content("{\"title\":  null, \"content\": \"내용입니다.\" }")
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 //jsonPath moveMVC resultMatchers: value에 notBlank메세지랑 맞춰야한다. 검증방법
