@@ -40,9 +40,11 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON) //컨텐츠타입 기본값 JSON 데이터 타입으로 명시해주기
                         .content("{\"title\":  null, \"content\": \"내용입니다.\" }")
                 )
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 //jsonPath moveMVC resultMatchers: value에 notBlank메세지랑 맞춰야한다. 검증방법
-                .andExpect(jsonPath("$.title").value("타이틀을 입력해주세요."))
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
+                .andExpect(jsonPath("$.validation.title").value("타이틀을 입력해주세요."))
                 .andDo(print()) //HTTP요청에 대한 summary를 남겨주게되서 응답내용 보여줌
         ;
 
