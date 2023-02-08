@@ -1,11 +1,13 @@
 package com.example.minilog.domain;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC) //접근레벨: PROTECTED -> PUBLIC 변경
 public class Post {
     @Id
