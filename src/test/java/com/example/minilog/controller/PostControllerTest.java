@@ -2,6 +2,8 @@ package com.example.minilog.controller;
 
 import com.example.minilog.domain.Post;
 import com.example.minilog.repository.PostRepository;
+import com.example.minilog.request.PostCreate;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 @AutoConfigureMockMvc
@@ -23,6 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class PostControllerTest {
 
+    @Autowired
+    private ObjectMapper objectMapper;
     @Autowired
     private PostRepository postRepository;
     @Autowired
@@ -36,9 +41,25 @@ class PostControllerTest {
     @Test
     @DisplayName("/posts 요청시 Hello World를 출력한다. ")
     void test() throws Exception {
+
+        //given
+        //PostCreate request = new PostCreate("제목입니다.", "내용입니다.");
+        //순서가 바뀌더라고 값을 명확하게 지정해서 문제가 없다.
+        PostCreate request = PostCreate.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .build();
+
+        //객체를 새로 생성할 거 없이 스프릥부트에서 오브젝트 빈을 제공을 해준다.
+        //설정을 바꾸고 싶을때는 새로 만드는게..
+        /*ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(request);*/
+        String json = objectMapper.writeValueAsString(request);
+
+
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
-                        .contentType(MediaType.APPLICATION_JSON) //컨텐츠타입 기본값 JSON 데이터 타입으로 명시해주기
-                        .content("{\"title\":  \"제목입니다.\", \"content\": \"내용입니다.\" }")
+                        .contentType(APPLICATION_JSON) //컨텐츠타입 기본값 JSON 데이터 타입으로 명시해주기
+                        .content(json)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("{}"))
@@ -50,9 +71,16 @@ class PostControllerTest {
     @Test
     @DisplayName("/posts 요청시 title값은 필수다.")
     void test2() throws Exception {
+
+        PostCreate request = PostCreate.builder()
+                .content("내용입니다.")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
-                        .contentType(MediaType.APPLICATION_JSON) //컨텐츠타입 기본값 JSON 데이터 타입으로 명시해주기
-                        .content("{\"title\":  null, \"content\": \"내용입니다.\" }")
+                        .contentType(APPLICATION_JSON) //컨텐츠타입 기본값 JSON 데이터 타입으로 명시해주기
+                        .content(json)
                 )
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 //jsonPath moveMVC resultMatchers: value에 notBlank메세지랑 맞춰야한다. 검증방법
@@ -67,10 +95,18 @@ class PostControllerTest {
     @Test
     @DisplayName("/posts 요청시 DB에 값이 저장된다..")
     void test3() throws Exception {
+
+        PostCreate request = PostCreate.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .build();
+
+        String json = objectMapper.writeValueAsString(request);
+
         //when
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
-                        .contentType(MediaType.APPLICATION_JSON) //컨텐츠타입 기본값 JSON 데이터 타입으로 명시해주기
-                        .content("{\"title\": \"내용입니다.\", \"content\": \"내용입니다.\" }")
+                        .contentType(APPLICATION_JSON) //컨텐츠타입 기본값 JSON 데이터 타입으로 명시해주기
+                        .content(json)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print()); //HTTP요청에 대한 summary를 남겨주게되서 응답내용 보여줌

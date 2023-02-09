@@ -1,8 +1,6 @@
 package com.example.minilog.request;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
@@ -16,7 +14,9 @@ public class PostCreate {
 
     @NotBlank(message = "콘텐츠를 입력하주세요.")
     private String content;
-
-
-
+    @Builder //디자인패턴, 생성자위에 다는것을 추천
+    public PostCreate(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

@@ -29,6 +29,7 @@ public class PostController {
             - 테스트 케이스는 나중에…
         */
         postService.write(request);
+        //BEAN JSON 객체가 내려가고있다. 
         return Map.of();
     }
 }
