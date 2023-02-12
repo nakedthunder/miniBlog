@@ -20,7 +20,7 @@ public class PostController {
 
     private final PostService postService;
     @PostMapping("/posts")
-    public Map<String, String> post(@RequestBody @Valid PostCreate request){
+    public void post(@RequestBody @Valid PostCreate request){
         /*
             1. 컨트롤러가있고
             2. 서비스가 있고
@@ -29,7 +29,17 @@ public class PostController {
             - 테스트 케이스는 나중에…
         */
         postService.write(request);
-        //BEAN JSON 객체가 내려가고있다. 
-        return Map.of();
+        //BEAN JSON 객체가 내려가고있다.
+    }
+
+    /*
+    * 글 조회를 하는 부분
+    * 1. /posts -> 글 전체 조회 (검색 + 페이징)
+    * 2. /posts/{postId} -> 글 한개만 조회
+    * */
+    @GetMapping("posts/{postId}")
+    public void get(@PathVariable Long postId) {
+        // 포스트 서비스에 글 가져오는 메소드를 만들어서 여기서 호출해야함
+
     }
 }

@@ -18,7 +18,12 @@ public class ExceptionController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public ErrorResponse exceptionHandler(MethodArgumentNotValidException e) {
-         ErrorResponse response = new ErrorResponse("400", "잘못된 요청입니다.");
+        //ErrorResponse response = new ErrorResponse("400", "잘못된 요청입니다.");
+        //ErrorResponse클래스 생성자에 @Builder를 만들어주고
+        ErrorResponse response = ErrorResponse.builder()
+                .code("400")
+                .message("잘못된 요청입니다.")
+                .build();
 
          //arrayList안에 getFieldErrors 필드객체가 담겨져있음
         for (FieldError fieldError : e.getFieldErrors()) {

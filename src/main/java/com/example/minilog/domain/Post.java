@@ -1,6 +1,7 @@
 package com.example.minilog.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +23,7 @@ public class Post {
     /* 외부의 오픈을 안하는 방식으로 생성자를 통해서
     *  변경을 닫는 형식으로..id는 자동생성이니 뺌
     * */
+    @Builder
     public Post(String title, String content) {
         this.title = title;
         this.content = content;
