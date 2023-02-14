@@ -1,5 +1,6 @@
 package com.example.minilog.controller;
 
+import com.example.minilog.domain.Post;
 import com.example.minilog.request.PostCreate;
 import com.example.minilog.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,9 @@ import java.util.Map;
 public class PostController {
 
     private final PostService postService;
+
     @PostMapping("/posts")
-    public void post(@RequestBody @Valid PostCreate request){
+    public void post(@RequestBody @Valid PostCreate request) {
         /*
             1. 컨트롤러가있고
             2. 서비스가 있고
@@ -33,13 +35,16 @@ public class PostController {
     }
 
     /*
-    * 글 조회를 하는 부분
-    * 1. /posts -> 글 전체 조회 (검색 + 페이징)
-    * 2. /posts/{postId} -> 글 한개만 조회
-    * */
+     * 글 조회를 하는 부분
+     * 1. /posts -> 글 전체 조회 (검색 + 페이징)
+     * 2. /posts/{postId} -> 글 한개만 조회
+     *
+     * 다시 컨트롤러로 와서 최종적으로 JSON으로 반환을 해줌 return post;
+     * */
     @GetMapping("posts/{postId}")
-    public void get(@PathVariable Long postId) {
-        // 포스트 서비스에 글 가져오는 메소드를 만들어서 여기서 호출해야함
-
+    public Post get(@PathVariable Long postId) {
+        // 포스트 서비스에 글 한개만 가져오는 메소드를 만들어서 여기서 호출해야함
+        Post post = postService.get(postId);
+        return post;
     }
 }

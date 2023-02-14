@@ -3,6 +3,8 @@ package com.example.minilog.service;
 import com.example.minilog.domain.Post;
 import com.example.minilog.repository.PostRepository;
 import com.example.minilog.request.PostCreate;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,11 @@ class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
+    @BeforeEach
+    void clean() {
+        postRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("글 작성")
     void test1() {
@@ -33,13 +40,36 @@ class PostServiceTest {
                 .content("내용입니다.")
                 .build();
 
-        //when
+        //when: 주입받으면 되니깐 글 작성에 대한 포스터데이터를 넘김
         postService.write(postCreate);
 
-        //then
+        //then: 글 작성을 하니 데이터 검증을 한다. 1개 작성을 해서 1이 된다.
         assertEquals(1L, postRepository.count());
+        //글에 대한 내용까지 검증을함.
         Post post = postRepository.findAll().get(0);
         assertEquals("제목입니다.", post.getTitle());
         assertEquals("내용입니다.", post.getContent());
+    }
+
+
+    @Test
+    @DisplayName("글 1개 조회")
+    void test2(){
+        //given
+        //우선은 글을 저장해줘야한다. post엔티티를 입력한다.
+        //포스트 레파지토리에 저장을 하면, 상품의 아이디가 들어가져서 get()을 통해서 조회를 한다.
+        Post requestPost = Post.builder()
+                .title("foo")
+                .content("bar")
+                .build();
+        postRepository.save(requestPost);
+
+        //when
+        Post post = postService.get(requestPost.getId());
+
+        //than
+        assertNotNull(post);
+        assertEquals("foo", post.getTitle());
+        assertEquals("bar", post.getContent());
     }
 }
