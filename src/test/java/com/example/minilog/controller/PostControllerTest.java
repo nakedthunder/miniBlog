@@ -19,8 +19,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @AutoConfigureMockMvc
 //@WebMvcTest
 @SpringBootTest
@@ -61,8 +64,8 @@ class PostControllerTest {
                         .contentType(APPLICATION_JSON) //컨텐츠타입 기본값 JSON 데이터 타입으로 명시해주기
                         .content(json)
                 )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("{}"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(""))
                 .andDo(print()) //HTTP요청에 대한 summary를 남겨주게되서 응답내용 보여줌 
         ;
 
@@ -82,7 +85,7 @@ class PostControllerTest {
                         .contentType(APPLICATION_JSON) //컨텐츠타입 기본값 JSON 데이터 타입으로 명시해주기
                         .content(json)
                 )
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(status().isBadRequest())
                 //jsonPath moveMVC resultMatchers: value에 notBlank메세지랑 맞춰야한다. 검증방법
                 .andExpect(jsonPath("$.code").value("400"))
                 .andExpect(jsonPath("$.message").value("잘못된 요청입니다."))
@@ -108,7 +111,7 @@ class PostControllerTest {
                         .contentType(APPLICATION_JSON) //컨텐츠타입 기본값 JSON 데이터 타입으로 명시해주기
                         .content(json)
                 )
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(status().isOk())
                 .andDo(print()); //HTTP요청에 대한 summary를 남겨주게되서 응답내용 보여줌
 
         //then
@@ -140,5 +143,23 @@ class PostControllerTest {
         //각각의 테스트들이 클린하게 @BeforeEach로 -> 테스트 메소드들이 가각실행되기전에 수행이되도록
         //보장을 해준다. 각각의 메소드들이  수행하기전에 실행된다.
         //테스트 케이스를 짜기전에 항상 클린해주는 환경을 만듬 *중요*
+    }
+
+    @Test
+    @DisplayName("글 1개 조회")
+    void test4() throws Exception {
+        Post post = Post.builder()
+                .title("foo")
+                .content("bar")
+                .build();
+        postRepository.save(post);
+
+        mockMvc.perform(get("/posts/{postId}", post.getId())
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(post.getId()))
+                .andExpect(jsonPath("$.title").value("foo"))
+                .andExpect(jsonPath("$.content").value("bar"))
+                .andDo(print());
     }
 }
