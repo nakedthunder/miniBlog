@@ -28,4 +28,13 @@ public class Post {
         this.title = title;
         this.content = content;
     }
+
+    //10글자만 가져갈 수 있도록 함.
+    /*
+    * 문제
+    * post에서 수정하면 나중에 특정기능이 추가될때 기존정책과 새로운정책이 충돌이 날 수 있다.
+    * */
+    public String getTitle() {
+        return this.title.substring(0, 10);
+    }
 }

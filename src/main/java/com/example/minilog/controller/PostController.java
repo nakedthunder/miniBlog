@@ -20,7 +20,9 @@ import java.util.Map;
 public class PostController {
 
     private final PostService postService;
-
+    // 0215
+    // 게시글을 저장하는거 post()
+    // 저장한 게시글을 조회하는거 get()
     @PostMapping("/posts")
     public void post(@RequestBody @Valid PostCreate request) {
         /*
@@ -44,7 +46,23 @@ public class PostController {
     @GetMapping("posts/{postId}")
     public Post get(@PathVariable Long postId) {
         // 포스트 서비스에 글 한개만 가져오는 메소드를 만들어서 여기서 호출해야함
+        // 포스트 컨틀롤러에서 Post엔티티로 그대로 사용하는 상황
         Post post = postService.get(postId);
         return post;
     }
+
+    /*
+    * 클라이언트를 위해서 만든 포스트의 getTitle()기능이
+    * RSS 정책과 묶여지게 된다.
+    * - RSS에서는 제목이 다 내려가야함에도 불구하고
+    * */
+    @GetMapping("posts/{postId}/rss")
+    public Post getRss(@PathVariable Long postId) {
+        // 포스트 서비스에 글 한개만 가져오는 메소드를 만들어서 여기서 호출해야함
+        // 포스트 컨틀롤러에서 Post엔티티로 그대로 사용하는 상황
+        Post post = postService.getRss(postId);
+        return post;
+    }
 }
+}
+

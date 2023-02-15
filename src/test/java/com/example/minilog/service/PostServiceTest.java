@@ -52,6 +52,9 @@ class PostServiceTest {
     }
 
 
+    /*
+    * 게시글을 저장 > 조회하는 서비스를 통해서 요청 > 엔티티 잘 가져오는지 확인
+    * */
     @Test
     @DisplayName("글 1개 조회")
     void test2(){
@@ -64,12 +67,17 @@ class PostServiceTest {
                 .build();
         postRepository.save(requestPost);
 
+        /**
+         * 요청
+         * json응답에서 title값 길이를 최대 10글자로 해주세요라는 응답...사실은 FO에서함
+         *
+         */
         //when
         Post post = postService.get(requestPost.getId());
 
         //than
         assertNotNull(post);
-        assertEquals("foo", post.getTitle());
+        assertEquals("123123123123123123123123123", post.getTitle());
         assertEquals("bar", post.getContent());
     }
 }

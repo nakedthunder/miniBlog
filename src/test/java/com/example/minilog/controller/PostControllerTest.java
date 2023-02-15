@@ -148,17 +148,19 @@ class PostControllerTest {
     @Test
     @DisplayName("글 1개 조회")
     void test4() throws Exception {
+        //글 저장하고
         Post post = Post.builder()
-                .title("foo")
+                .title("123123123123123123123123123")
                 .content("bar")
                 .build();
         postRepository.save(post);
 
+        //조회 api를 통해서 JSON으로 응답이 잘 내려오는지 확인
         mockMvc.perform(get("/posts/{postId}", post.getId())
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(post.getId()))
-                .andExpect(jsonPath("$.title").value("foo"))
+                .andExpect(jsonPath("$.title").value("123123123123123123123123123"))
                 .andExpect(jsonPath("$.content").value("bar"))
                 .andDo(print());
     }
