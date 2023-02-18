@@ -2,6 +2,7 @@ package com.example.minilog.controller;
 
 import com.example.minilog.domain.Post;
 import com.example.minilog.request.PostCreate;
+import com.example.minilog.response.PostResponse;
 import com.example.minilog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,17 +45,17 @@ public class PostController {
      * 다시 컨트롤러로 와서 최종적으로 JSON으로 반환을 해줌 return post;
      * */
     @GetMapping("posts/{postId}")
-    public Post get(@PathVariable Long postId) {
+    public PostResponse get(@PathVariable Long postId) {
         // 포스트 서비스에 글 한개만 가져오는 메소드를 만들어서 여기서 호출해야함
         // 포스트 컨틀롤러에서 Post엔티티로 그대로 사용하는 상황
-        Post post = postService.get(postId);
-        return post;
+        PostResponse response = postService.get(postId);
+        return response;
     }
 
     /*
     * 클라이언트를 위해서 만든 포스트의 getTitle()기능이
     * RSS 정책과 묶여지게 된다.
-    * - RSS에서는 제목이 다 내려가야함에도 불구하고
+    * - RSS에서는 제목이 다 내려가야함에도 불구하고 10글자만 내려감
     * */
     @GetMapping("posts/{postId}/rss")
     public Post getRss(@PathVariable Long postId) {
@@ -63,6 +64,5 @@ public class PostController {
         Post post = postService.getRss(postId);
         return post;
     }
-}
 }
 

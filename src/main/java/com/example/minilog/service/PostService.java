@@ -3,6 +3,7 @@ package com.example.minilog.service;
 import com.example.minilog.domain.Post;
 import com.example.minilog.repository.PostRepository;
 import com.example.minilog.request.PostCreate;
+import com.example.minilog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public Post get(Long postId) {
+    public PostResponse get(Long postId) {
         //findById가 post엔티티를 바로 반환하지않고 옵셔널데이터로 감싸져서 반환을 해줌
         //Optional데이터는 바로 가져와서 즉시 꺼내주는걸 추천함
         //글 데이터가 없을때(null)의 조치를 하는거면 orElse인 경우 "없다!" 에러를 만들어줌
@@ -44,7 +45,24 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글 입니다."));
 
-        return post;
+        /*
+        * 엔티티를 조회했으면 변환시키기 PostResponse.builder()...
+        * PostResponse가 만들어짐
+        *
+        * 응답분리 (레이어를 나눔..)
+        * response를 위해서 행위를 하는 서비스 호출은 WebPostService
+        * 외부 다른 서비스를 하는거는 PostService에다가함
+        *
+        * */
+        //PostService 조회해온 데이터 엔티티를 PostResponse클래스로 변환했는데
+        //여기가 맞는지 ? ->
+        PostResponse response = PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .build();
+
+        return response;
     }
 
     //나중에 잘되서 RSS를 발행하게 된 경우 ... ㅎㅎ

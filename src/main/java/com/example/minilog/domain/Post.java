@@ -33,8 +33,10 @@ public class Post {
     /*
     * 문제
     * post에서 수정하면 나중에 특정기능이 추가될때 기존정책과 새로운정책이 충돌이 날 수 있다.
+    *
+    * 서비스의 정책을 넣지말것
     * */
     public String getTitle() {
-        return this.title.substring(0, 10);
+        return this.title;
     }
 }

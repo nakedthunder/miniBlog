@@ -150,7 +150,7 @@ class PostControllerTest {
     void test4() throws Exception {
         //글 저장하고
         Post post = Post.builder()
-                .title("123123123123123123123123123")
+                .title("123456789012345")
                 .content("bar")
                 .build();
         postRepository.save(post);
@@ -160,7 +160,7 @@ class PostControllerTest {
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(post.getId()))
-                .andExpect(jsonPath("$.title").value("123123123123123123123123123"))
+                .andExpect(jsonPath("$.title").value("1234567890"))
                 .andExpect(jsonPath("$.content").value("bar"))
                 .andDo(print());
     }

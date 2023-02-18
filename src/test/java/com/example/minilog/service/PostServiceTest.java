@@ -3,6 +3,7 @@ package com.example.minilog.service;
 import com.example.minilog.domain.Post;
 import com.example.minilog.repository.PostRepository;
 import com.example.minilog.request.PostCreate;
+import com.example.minilog.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -73,11 +74,11 @@ class PostServiceTest {
          *
          */
         //when
-        Post post = postService.get(requestPost.getId());
+        PostResponse response = postService.get(requestPost.getId());
 
         //than
-        assertNotNull(post);
-        assertEquals("123123123123123123123123123", post.getTitle());
-        assertEquals("bar", post.getContent());
+        assertNotNull(response);
+        assertEquals("123123123123123123123123123", response.getTitle());
+        assertEquals("bar", response.getContent());
     }
 }
