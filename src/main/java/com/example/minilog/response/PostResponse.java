@@ -12,11 +12,9 @@ public class PostResponse {
     private final String title;
     private final String content;
 
-    //subString
-    /*생성자를 통해서 @builder를 만들게 되면은
-    * this.title은 멤버변수에 셋팅을 해줄때 10글자만 해주면 된다.
-    * */
-
+    //타이틀을 멤버변수에 세팅을 해주면 getter메서드는 손을 안바도된다.
+    //이거는 버그여지발생이 있다. 글자가 5개 인경우...
+    // StringIndexOutOfBoundsException: begin 0, end 10, length 5
     @Builder
     public PostResponse(Long id, String title, String content) {
         this.id = id;

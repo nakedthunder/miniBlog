@@ -66,10 +66,17 @@ public class PostService {
     }
 
     //나중에 잘되서 RSS를 발행하게 된 경우 ... ㅎㅎ
-    public Post getRss(Long id) {
+    public PostResponse getRss(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글 입니다."));
 
-        return post;
+        // 응답 클래스를 만들고 엔티티 조회한 것을 변환시켜라
+        PostResponse response = PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.content)
+                .build();
+
+        return response;
     }
 }

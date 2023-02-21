@@ -58,11 +58,11 @@ public class PostController {
     * - RSS에서는 제목이 다 내려가야함에도 불구하고 10글자만 내려감
     * */
     @GetMapping("posts/{postId}/rss")
-    public Post getRss(@PathVariable Long postId) {
+    public PostResponse getRss(@PathVariable Long postId) {
         // 포스트 서비스에 글 한개만 가져오는 메소드를 만들어서 여기서 호출해야함
         // 포스트 컨틀롤러에서 Post엔티티로 그대로 사용하는 상황
-        Post post = postService.getRss(postId);
-        return post;
+        PostResponse response = postService.getRss(postId);
+        return response;
     }
 }
 
