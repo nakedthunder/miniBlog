@@ -4,14 +4,16 @@ import com.example.minilog.domain.Post;
 import com.example.minilog.repository.PostRepository;
 import com.example.minilog.request.PostCreate;
 import com.example.minilog.response.PostResponse;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest //포스트 서비스가 주입임 안되서
 class PostServiceTest {
 
@@ -80,5 +82,29 @@ class PostServiceTest {
         assertNotNull(response);
         assertEquals("123123123123123123123123123", response.getTitle());
         assertEquals("bar", response.getContent());
+    }
+
+    @Test
+    @DisplayName("글 여러개 조회")
+    void test3(){
+        Post requestPost1 = Post.builder()
+                .title("foo")
+                .content("bar")
+                .build();
+        postRepository.save(requestPost1);
+
+        Post requestPost2 = Post.builder()
+                .title("foo")
+                .content("bar")
+                .build();
+        postRepository.save(requestPost2);
+
+
+        //when
+        List<Post> posts = postService.getList();
+
+        //than 검증을 해야함 두개를 저장해서 2
+        assertEquals(2L, posts.size());
+
     }
 }

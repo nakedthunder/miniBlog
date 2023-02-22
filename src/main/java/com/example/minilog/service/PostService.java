@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -71,12 +71,15 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글 입니다."));
 
         // 응답 클래스를 만들고 엔티티 조회한 것을 변환시켜라
-        PostResponse response = PostResponse.builder()
+        return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.content)
                 .build();
 
-        return response;
+    }
+
+    public List<Post> getList() {
+        return postRepository.findAll();
     }
 }

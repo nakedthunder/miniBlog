@@ -6,14 +6,10 @@ import com.example.minilog.response.PostResponse;
 import com.example.minilog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -48,8 +44,9 @@ public class PostController {
     public PostResponse get(@PathVariable Long postId) {
         // 포스트 서비스에 글 한개만 가져오는 메소드를 만들어서 여기서 호출해야함
         // 포스트 컨틀롤러에서 Post엔티티로 그대로 사용하는 상황
-        PostResponse response = postService.get(postId);
-        return response;
+        /*PostResponse response = postService.get(postId);
+        return response;*/
+        return postService.get(postId);
     }
 
     /*
@@ -57,12 +54,17 @@ public class PostController {
     * RSS 정책과 묶여지게 된다.
     * - RSS에서는 제목이 다 내려가야함에도 불구하고 10글자만 내려감
     * */
-    @GetMapping("posts/{postId}/rss")
+   /* @GetMapping("posts/{postId}/rss")
     public PostResponse getRss(@PathVariable Long postId) {
         // 포스트 서비스에 글 한개만 가져오는 메소드를 만들어서 여기서 호출해야함
         // 포스트 컨틀롤러에서 Post엔티티로 그대로 사용하는 상황
         PostResponse response = postService.getRss(postId);
         return response;
+    }*/
+
+    @GetMapping("/posts")
+    public List<Post> getList() {
+        return postService.getList();
     }
 }
 
