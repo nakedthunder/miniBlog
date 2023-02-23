@@ -87,11 +87,8 @@ public class PostService {
         // 1. 엔티티가 넘어왔을때, 기존의 PostRespnse클래스에서 생성자 .builder를 통해
         // 엔티티에 넘어온 값을 return을 해줌
         return postRepository.findAll().stream()
-                .map(post -> PostResponse.builder()
-                        .id(post.getId())
-                        .title(post.getTitle())
-                        .content(post.getContent()) //content를 누락해서 PostControllerTest에서 content null나옴
-                        .build())
+                //서비스엔티티를 넣어주면 생성이 된다.-> builder를 통해서 작성하는 것 보다 훨씬 더 간결해짐
+                .map(post -> new PostResponse(post))
                 .collect(Collectors.toList());
     }
 }

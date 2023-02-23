@@ -156,7 +156,7 @@ class PostControllerTest {
         //조회 api를 통해서 JSON으로 응답이 잘 내려오는지 확인
         mockMvc.perform(get("/posts/{postId}", post.getId())
                 .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
+                . andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(post.getId()))
                 .andExpect(jsonPath("$.title").value("1234567890"))
                 .andExpect(jsonPath("$.content").value("bar"))

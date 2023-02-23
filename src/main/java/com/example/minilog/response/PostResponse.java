@@ -1,5 +1,6 @@
 package com.example.minilog.response;
 
+import com.example.minilog.domain.Post;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,13 @@ public class PostResponse {
     private final Long id;
     private final String title;
     private final String content;
+
+    //생성자 오버로딩
+    public PostResponse(Post post) {
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+    }
 
     //타이틀을 멤버변수에 세팅을 해주면 getter메서드는 손을 안바도된다.
     //이거는 버그여지발생이 있다. 글자가 5개 인경우...
