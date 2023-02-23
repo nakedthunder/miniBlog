@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -79,7 +80,18 @@ public class PostService {
 
     }
 
-    public List<Post> getList() {
-        return postRepository.findAll();
+    //원래는 List<Post>로 Post엔티티를 바로 리턴했는데 -> PostResponse로 리턴
+    public List<PostResponse> getList() {
+        // findAll()를 PostResponse로 만들어줄라면 map을 통해서 PostResponse를 생성하고
+        // Collectors.toList()로 변환해주면 된다.
+        // 1. 엔티티가 넘어왔을때, 기존의 PostRespnse클래스에서 생성자 .builder를 통해
+        // 엔티티에 넘어온 값을 return을 해줌
+        return postRepository.findAll().stream()
+                .map(post -> PostResponse.builder()
+                        .id(post.getId())
+                        .title(post.getTitle())
+                        .content(post.getContent()) //content를 누락해서 PostControllerTest에서 content null나옴
+                        .build())
+                .collect(Collectors.toList());
     }
 }

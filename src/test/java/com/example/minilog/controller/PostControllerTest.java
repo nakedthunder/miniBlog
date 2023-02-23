@@ -4,6 +4,7 @@ import com.example.minilog.domain.Post;
 import com.example.minilog.repository.PostRepository;
 import com.example.minilog.request.PostCreate;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -159,6 +160,38 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.id").value(post.getId()))
                 .andExpect(jsonPath("$.title").value("1234567890"))
                 .andExpect(jsonPath("$.content").value("bar"))
+                .andDo(print());
+    }
+
+    //사용자 입장에서 호출하는 API를 호출하는 기능 테스트
+    @Test
+    @DisplayName("글 여러개 조회")
+    void test5() throws Exception {
+        //글 여러개 저장하고
+        Post post1 = Post.builder()
+                .title("title_1")
+                .content("content_1")
+                .build();
+        postRepository.save(post1);
+
+        Post post2 = Post.builder()
+                .title("title_2")
+                .content("content_2")
+                .build();
+        postRepository.save(post2);
+
+        //응답형태가 list로 내려오고 리스트안에 {} 오브젝트가 포함되서
+        //Body = [{"id":1,"title":"123456789012345","content":"bar"},{"id":2,"title":"123456789012345","content":"bar"}]
+        //다른 방식의 검증처리로함
+
+        //jsonPath array length() assertion ->  길이가 2개인지 조회/확인하기위해서 추가
+        mockMvc.perform(get("/posts")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].id").value(post1.getId()))
+                .andExpect(jsonPath("$[0].title").value(post1.getTitle()))
+                .andExpect(jsonPath("$[0].content").value(post1.getContent())) //content_1이 null이나옴
                 .andDo(print());
     }
 }

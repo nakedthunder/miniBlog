@@ -101,7 +101,7 @@ class PostServiceTest {
 
 
         //when
-        List<Post> posts = postService.getList();
+        List<PostResponse> posts = postService.getList();
 
         //than 검증을 해야함 두개를 저장해서 2
         assertEquals(2L, posts.size());
